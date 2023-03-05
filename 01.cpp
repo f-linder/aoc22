@@ -2,7 +2,6 @@
 #include <fmt/core.h>
 #include <algorithm>
 #include "parser.h"
-#include <tuple>
 
 class Calories {
     std::vector<int> sums;
@@ -18,11 +17,8 @@ class Calories {
                 current_kcal = 0;
                 continue;
             } 
-            
             current_kcal += std::stoi(line);
         }
-
-
     }
 
     int getMax() {
@@ -38,11 +34,11 @@ class Calories {
 
         return sums[0] + sums[1] + sums[2];
     }
-
 };
 
 
 int main() {
+
     fmt::print("AOC-22 #01\n");
     Calories kcal{"../data/01.txt"};
     fmt::print("maximum sum of kcal: {}\n", kcal.getMax());
