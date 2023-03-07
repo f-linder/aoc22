@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <string>
 #include <fmt/core.h>
 #include <algorithm>
@@ -6,85 +5,71 @@
 #include <unordered_map>
 #include <vector>
 
+enum class Shape { Rock, Paper, Scissors };
+
 struct Tournament {
-    // pair = [elfs shape, our shape]
-    std::vector<std::pair<char, char>> pairs;
+
+    std::vector<std::pair<char, char>> rounds;
+    std::unordered_map<char, Shape> charToShape; 
 
     Tournament(std::string filename) {
-        auto lines = Parser::readLines(filename);
+        charToShape = {{'A', Shape::Rock}, {'B', Shape::Paper}, {'C', Shape::Scissors},
+                        {'X', Shape::Rock}, {'Y', Shape::Paper}, {'Z', Shape::Scissors}};
 
+        auto lines = Parser::readLines(filename);
         for (const auto & l : lines) {
             if (l.size() < 3) continue;
-            pairs.push_back({l.at(0), l.at(2)});
+            rounds.push_back({l.at(0), l.at(2)});
         }
     }
     
-    // calculate win/draw/lose for given shapes
-    int round1() {
-        // rock "X" = 1, paper "Y" = 2, scissors "Z" = 3
-        std::unordered_map<char, int> shapeToScore = {{'X', 1}, {'Y', 2}, {'Z', 3}};
-        int score = 0;
-
-        for (const auto & [elf, me] : pairs) {
-            score += shapeToScore[me]; 
-
-            switch (elf) {
-                // rock
-                case 'A': 
-                    if (me == 'X') score += 3;
-                    else if (me == 'Y') score += 6;
-                    else score += 0;
-                    break;
-                // paper
-                case 'B':
-                    if (me == 'X') score += 0;
-                    else if (me == 'Y') score += 3;
-                    else score += 6;
-                    break;
-                // scissors
-                case 'C':
-                    if (me == 'X') score += 6;
-                    else if (me == 'Y') score += 0;
-                    else score += 3;
-                    break;
-         
-                default: throw std::logic_error("wrong type");
-            }
-        }
-        return score;
+    static Shape winningShape(Shape elf) {
+        if (elf == Shape::Rock)         return Shape::Paper;
+        if (elf == Shape::Paper)        return Shape::Scissors;
+        if (elf == Shape::Scissors)     return Shape::Rock;
     }
 
-    // calculate the shape we chose for given win/draw/lose
-    int round2() {
-        int score = 0;
+    static Shape losingShape(Shape elf) {
+        if (elf == Shape::Rock)         return Shape::Scissors;
+        if (elf == Shape::Paper)        return Shape::Rock;
+        if (elf == Shape::Scissors)     return Shape::Paper;
+    }
 
-        for (const auto & [elf, result] : pairs) {
-            switch (result) {
-                // loose
-                case 'X':
-                    score += 0;
-                    // rock -> scissor +2
-                    if (elf == 'A') score += 3;
-                    // paper -> rock +1
-                    else if (elf == 'B') score += 1;
-                    // scissors -> paper
-                    else score += 2;
-                    break;
-                // draw
-                case 'Y':
-                    score += 3;
-                    if (elf == 'A') score += 1;
-                    else if (elf == 'B') score += 2;
-                    else score += 3;
-                    break;
-                // win
-                case 'Z':
-                    score += 6;
-                    if (elf == 'A') score += 2;
-                    else if (elf == 'B') score += 3;
-                    else score += 1;
-                    break;
+    static int points(Shape elf, Shape me) {
+        int result{0};
+        
+        switch (me) {
+            case Shape::Rock:       result += 1; break;
+            case Shape::Paper:      result += 2; break;
+            case Shape::Scissors:   result += 3; break;
+             
+        }
+        
+        // draw
+        if (elf == me)                  result += 3;
+        // win
+        if (me == winningShape(elf))    result += 6;
+
+        return result;
+    }
+
+
+    int calculateScore(bool part2 = false) {
+        int score{0};
+        
+        for (const auto & [elf, me] : rounds) {
+            Shape elfsShape = charToShape[elf];
+            Shape myShape = charToShape[me];
+
+            if (part2) {
+                switch (me) {
+                    case 'X': myShape = losingShape(elfsShape);     break;
+                    case 'Y': myShape = elfsShape;                  break;
+                    case 'Z': myShape = winningShape(elfsShape);    break;
+                }
             }
+
+            score += points(elfsShape, myShape);
         }
 
         return score;
@@ -98,7 +83,7 @@ int main() {
     fmt::print("AOC-22 #02\n");
     Tournament t = {"../data/02.txt"};
 
-    fmt::print("overall score: {}\n", t.round1());
-    fmt::print("update score: {}\n", t.round2());
+    fmt::print("overall score: {}\n", t.calculateScore());
+    fmt::print("updated score: {}\n", t.calculateScore(true));
     return 0;
 }
