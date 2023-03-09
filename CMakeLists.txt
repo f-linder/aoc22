@@ -23,3 +23,6 @@ add_executable(AOC-05 05.cpp parser.h)
 target_link_libraries(AOC-05 PRIVATE fmt::fmt)
 target_compile_features(AOC-05 PRIVATE cxx_std_20)
 
+add_executable(AOC-06 06.cpp parser.h)
+target_link_libraries(AOC-06 PRIVATE fmt::fmt)
+target_compile_features(AOC-06 PRIVATE cxx_std_20)
