@@ -1,5 +1,3 @@
-#include <string>
-#include <fmt/core.h>
 #include <algorithm>
 #include "parser.h"
 
@@ -35,7 +33,6 @@ class Calories {
         return sums[0] + sums[1] + sums[2];
     }
 };
-
 
 int main() {
 

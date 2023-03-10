@@ -1,11 +1,5 @@
 #include <cctype>
-#include <stdexcept>
-#include <string>
-#include <fmt/core.h>
 #include "parser.h"
-#include <string_view>
-#include <utility>
-#include <numeric>
 
 struct Comparments {
     std::string left;
@@ -78,7 +72,3 @@ int main() {
 
     return 0;
 }
-
-
-
-

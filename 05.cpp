@@ -1,12 +1,6 @@
 #include <cstdlib>
-#include <exception>
-#include <stdexcept>
-#include <string>
-#include <fmt/core.h>
 #include "parser.h"
 #include <utility>
-#include <stack>
-#include <vector>
 
 struct Crane {
     int count;

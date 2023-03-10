@@ -1,9 +1,6 @@
-#include <string>
-#include <fmt/core.h>
 #include <algorithm>
 #include "parser.h"
 #include <unordered_map>
-#include <vector>
 
 enum class Shape { Rock, Paper, Scissors };
 

@@ -1,10 +1,5 @@
-#include <stdexcept>
-#include <string>
-#include <fmt/core.h>
 #include "parser.h"
-#include <string_view>
 #include <utility>
-#include <iostream>
 
 struct Assignment {
     int begin, end;
@@ -45,7 +40,7 @@ public:
         return sum;
     }
     
-    // first overlaps with second ()
+    // first overlaps with second
     bool overlap(Assignment first, Assignment second) {
         return (first.end >= second.begin && first.begin && second.end >= first.begin);
     }
