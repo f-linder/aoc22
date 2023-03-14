@@ -35,3 +35,7 @@ add_executable(AOC-08 08.cpp parser.h)
 target_link_libraries(AOC-08 PRIVATE fmt::fmt)
 target_compile_features(AOC-08 PRIVATE cxx_std_20)
 
+add_executable(AOC-09 09.cpp parser.h)
+target_link_libraries(AOC-09 PRIVATE fmt::fmt)
+target_compile_features(AOC-09 PRIVATE cxx_std_20)
+
