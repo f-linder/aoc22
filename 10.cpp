@@ -61,18 +61,21 @@ public:
 
     void print() {
         if (registerX.size() <= 240) throw std::logic_error("too little cycles");
-
+        
+        std::string s{""};
         for (int i = 0; i < 240; ++i) {
             if (i % 40 == 0) 
-                fmt::print("\n");
+                s += "\n";
 
             int posSprite = registerX[i + 1];
             // one pixel apart or on the same spot
             if (std::abs(posSprite - (i % 40)) <= 1)
-                fmt::print("#");
+                s += "#";
             else
-                fmt::print(".");
+                s += ".";
         }
+
+        fmt::print("image representation: {}\n", s);
     }
 };
 
